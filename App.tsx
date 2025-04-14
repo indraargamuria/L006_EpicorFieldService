@@ -1,4 +1,5 @@
-import { ScreenContent } from 'components/ScreenContent';
+import { Homepage } from 'components/Homepage';
+import { Login } from 'components/Login';
 import { StatusBar } from 'expo-status-bar';
 
 import './global.css';
@@ -6,8 +7,7 @@ import './global.css';
 export default function App() {
   return (
     <>
-      <ScreenContent title="Home" path="App.tsx" />
-      <StatusBar style="auto" />
+      <Login />
     </>
   );
 }
