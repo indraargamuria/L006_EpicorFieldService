@@ -1,9 +1,33 @@
-import { Text, View } from 'react-native';
+import { Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import { useState, useEffect } from 'react';
+import api from '../utils/api'; // Import your api setup
 
-export const Homepage = () => {
+// Mendefinisikan tipe Props untuk menerima fungsi setIsClicked
+interface Props {
+  setIsClicked: (source: string) => void;
+}
+export const Homepage = ({ setIsClicked }: Props) => {
+  const logout = async () => {
+    try {
+      await SecureStore.deleteItemAsync('isLoggedIn'); // atau key lain yang kamu pakai
+      await SecureStore.deleteItemAsync('loginTimestamp'); // atau key lain yang kamu pakai
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
   return (
     <View className={styles.container}>
-        <Text>Homepage</Text>
+      <Text>Homepage</Text>
+      <TouchableOpacity className="mt-4 w-full rounded-full bg-red-400 py-3" onPress={logout}>
+        <Text className="text-center text-lg font-bold text-white">Logout</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        className="mt-4 w-full rounded-full bg-blue-400 py-3"
+        onPress={() => setIsClicked('HOMEPAGE MANTAP')} // Set value to 'from homepage'
+      >
+        <Text className="text-center text-lg font-bold text-white">Update App State</Text>
+      </TouchableOpacity>
     </View>
   );
 };

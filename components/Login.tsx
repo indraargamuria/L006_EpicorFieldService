@@ -4,7 +4,10 @@ import { useState, useEffect } from 'react';
 import api from '../utils/api'; // Import your api setup
 import UserInactivity from 'react-native-user-inactivity';
 
-export const Login = () => {
+interface Props {
+  setIsClicked: (source: string) => void;
+}
+export const Login = ({ setIsClicked }: Props) => {
   const [username, setUsername] = useState('OpexArga');
   const [password, setPassword] = useState('Nilam172459');
   const [loading, setLoading] = useState(false);
@@ -14,7 +17,6 @@ export const Login = () => {
     try {
       await SecureStore.deleteItemAsync('isLoggedIn'); // atau key lain yang kamu pakai
       await SecureStore.deleteItemAsync('loginTimestamp'); // atau key lain yang kamu pakai
-      console.log('Logged out successfully');
       setError('Logout Success');
     } catch (error) {
       console.error('Logout error:', error);
@@ -24,7 +26,6 @@ export const Login = () => {
   const checkSession = async () => {
     const isLoggedIn = await SecureStore.getItemAsync('isLoggedIn');
     const loginTimestamp = await SecureStore.getItemAsync('loginTimestamp');
-    console.log(isLoggedIn);
 
     const loginStatus = isLoggedIn == null ? 'Session Inactive' : 'Active';
     setError(loginStatus);
@@ -47,11 +48,8 @@ export const Login = () => {
       // Make the POST request with the correct payload
       const response = await api.post('/Ice.BO.UserFileSvc/ValidatePassword', payload);
 
-      console.log(response.data); // Log the response to inspect it
-
       // Check if the returnObj field is true for success
       if (response.data && response.data.returnObj) {
-        console.log('Login success');
         await SecureStore.setItemAsync('isLoggedIn', 'true'); // Store login flag
         await SecureStore.setItemAsync('loginTimestamp', Date.now().toString()); // Store timestamp
         // Store the session token (if provided by the API) securely
@@ -63,7 +61,6 @@ export const Login = () => {
         setError('Invalid credentials');
       }
     } catch (err) {
-      console.error(err); // Log the error to see the detailed response
       setError('Login failed. Please try again.');
     } finally {
       setLoading(false);
@@ -125,7 +122,12 @@ export const Login = () => {
           disabled={loading}>
           <Text className="text-center text-lg font-bold text-white">Logout</Text>
         </TouchableOpacity>
-        );
+        <TouchableOpacity
+          className="mt-4 w-full rounded-full bg-blue-400 py-3"
+          onPress={() => setIsClicked('LOGIN NIH BOS')} // Set value to 'from homepage'
+        >
+          <Text className="text-center text-lg font-bold text-white">Update App State</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
