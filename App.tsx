@@ -1,7 +1,7 @@
 import { Text, View, ActivityIndicator } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { useState, useEffect } from 'react';
-import { Homepage } from 'components/Homepage';
+import { ServiceHomepage } from 'components/ServiceHomepage';
 import { Login } from 'components/Login'; // pastikan file Login.tsx ada
 
 import './global.css';
@@ -41,7 +41,7 @@ export default function App() {
   }
 
   return isLoggedIn ? (
-    <Homepage setIsLoggedIn={handleSession} setIsClicked={handleClick} />
+    <ServiceHomepage setIsLoggedIn={handleSession} setIsClicked={handleClick} />
   ) : (
     <Login setIsLoggedIn={handleSession} setIsClicked={handleClick} />
   );
