@@ -6,12 +6,14 @@ import api from '../utils/api'; // Import your api setup
 // Mendefinisikan tipe Props untuk menerima fungsi setIsClicked
 interface Props {
   setIsClicked: (source: string) => void;
+  setIsLoggedIn: (source: boolean) => void;
 }
-export const Homepage = ({ setIsClicked }: Props) => {
+export const Homepage = ({ setIsClicked, setIsLoggedIn }: Props) => {
   const logout = async () => {
     try {
       await SecureStore.deleteItemAsync('isLoggedIn'); // atau key lain yang kamu pakai
-      await SecureStore.deleteItemAsync('loginTimestamp'); // atau key lain yang kamu pakai
+      await SecureStore.deleteItemAsync('loginTimestamp'); // atau key lain yang kamu pakai\
+      setIsLoggedIn(false);
     } catch (error) {
       console.error('Logout error:', error);
     }

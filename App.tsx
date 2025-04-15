@@ -10,10 +10,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function App() {
   const [isClicked, setIsClicked] = useState(''); // State untuk menampung nilai
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null); // null = loading state
+  const [isActive, setIsActive] = useState(''); // State untuk menampung nilai
 
   // Fungsi untuk mengubah state isClicked
   const handleClick = (source: string) => {
     setIsClicked(source); // Update state dengan sumber (homepage atau login)
+  };
+  const handleSession = (source: boolean) => {
+    setIsLoggedIn(source);
+    setIsActive(source ? 'Active' : 'Inactive');
   };
 
   useEffect(() => {
@@ -40,18 +45,20 @@ export default function App() {
     <SafeAreaView className="flex-1">
       {/* Display isClicked text */}
       <View className="bg-gray-100 p-4">
-        <Text className="text-center text-xl font-bold">isClicked: {isClicked}</Text>
+        <Text className="text-center text-xl font-bold">
+          isClicked: {isClicked} Logged In {isActive}
+        </Text>
       </View>
 
       <View className="flex-1 flex-row">
         {/* Homepage takes the left half of the screen */}
         <View className="flex-1 border-r border-gray-200">
-          <Homepage setIsClicked={handleClick} />
+          <Homepage setIsLoggedIn={handleSession} setIsClicked={handleClick} />
         </View>
 
         {/* Login takes the right half of the screen */}
         <View className="flex-1">
-          <Login setIsClicked={handleClick} />
+          <Login setIsLoggedIn={handleSession} setIsClicked={handleClick} />
         </View>
       </View>
     </SafeAreaView>

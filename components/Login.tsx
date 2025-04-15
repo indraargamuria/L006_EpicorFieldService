@@ -6,8 +6,9 @@ import UserInactivity from 'react-native-user-inactivity';
 
 interface Props {
   setIsClicked: (source: string) => void;
+  setIsLoggedIn: (source: boolean) => void;
 }
-export const Login = ({ setIsClicked }: Props) => {
+export const Login = ({ setIsClicked, setIsLoggedIn }: Props) => {
   const [username, setUsername] = useState('OpexArga');
   const [password, setPassword] = useState('Nilam172459');
   const [loading, setLoading] = useState(false);
@@ -52,6 +53,7 @@ export const Login = ({ setIsClicked }: Props) => {
       if (response.data && response.data.returnObj) {
         await SecureStore.setItemAsync('isLoggedIn', 'true'); // Store login flag
         await SecureStore.setItemAsync('loginTimestamp', Date.now().toString()); // Store timestamp
+        setIsLoggedIn(true);
         // Store the session token (if provided by the API) securely
         //await SecureStore.setItemAsync('userToken', 'your-session-token'); // Replace with actual token if returned
         // Navigate to the home page or another screen
