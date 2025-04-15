@@ -112,7 +112,7 @@ export const Login = ({ setIsClicked, setIsLoggedIn }: Props) => {
             <Text className="text-center text-lg font-bold text-white">Login</Text>
           )}
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           className="mt-4 w-full rounded-full bg-green-400 py-3"
           onPress={checkSession}
           disabled={loading}>
@@ -129,7 +129,7 @@ export const Login = ({ setIsClicked, setIsLoggedIn }: Props) => {
           onPress={() => setIsClicked('LOGIN NIH BOS')} // Set value to 'from homepage'
         >
           <Text className="text-center text-lg font-bold text-white">Update App State</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
