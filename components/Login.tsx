@@ -1,13 +1,36 @@
 import { Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../utils/api'; // Import your api setup
+import UserInactivity from 'react-native-user-inactivity';
 
 export const Login = () => {
   const [username, setUsername] = useState('OpexArga');
   const [password, setPassword] = useState('Nilam172459');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const logout = async () => {
+    try {
+      await SecureStore.deleteItemAsync('isLoggedIn'); // atau key lain yang kamu pakai
+      await SecureStore.deleteItemAsync('loginTimestamp'); // atau key lain yang kamu pakai
+      console.log('Logged out successfully');
+      setError('Logout Success');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  const checkSession = async () => {
+    const isLoggedIn = await SecureStore.getItemAsync('isLoggedIn');
+    const loginTimestamp = await SecureStore.getItemAsync('loginTimestamp');
+    console.log(isLoggedIn);
+
+    const loginStatus = isLoggedIn == null ? 'Session Inactive' : 'Active';
+    setError(loginStatus);
+
+    return false; // Not logged in
+  };
 
   // Login function
   const handleLogin = async () => {
@@ -29,6 +52,8 @@ export const Login = () => {
       // Check if the returnObj field is true for success
       if (response.data && response.data.returnObj) {
         console.log('Login success');
+        await SecureStore.setItemAsync('isLoggedIn', 'true'); // Store login flag
+        await SecureStore.setItemAsync('loginTimestamp', Date.now().toString()); // Store timestamp
         // Store the session token (if provided by the API) securely
         //await SecureStore.setItemAsync('userToken', 'your-session-token'); // Replace with actual token if returned
         // Navigate to the home page or another screen
@@ -58,37 +83,49 @@ export const Login = () => {
             alt="Epicor logo"
           />
         </View>
-        <Text className="text-2xl font-bold mb-2">Epicor FS Managements</Text>
-        <Text className="text-gray-500 mb-6">One Tap Solution for FS</Text>
+        <Text className="mb-2 text-2xl font-bold">Epicor FS Management</Text>
+        <Text className="mb-6 text-gray-500">One Tap Solution for FS</Text>
         <View className="mb-4">
           <TextInput
-            className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-700"
+            className="w-full rounded-full bg-gray-100 px-4 py-3 text-gray-700"
             placeholder="User"
             value={username}
             onChangeText={setUsername}
           />
         </View>
-        <View className="mb-4 relative">
+        <View className="relative mb-4">
           <TextInput
-            className="w-full px-4 py-3 rounded-full bg-gray-100 text-gray-700"
+            className="w-full rounded-full bg-gray-100 px-4 py-3 text-gray-700"
             placeholder="Password"
             secureTextEntry
             value={password}
             onChangeText={setPassword}
           />
         </View>
-        {error && <Text className="text-red-500 mb-4">{error}</Text>}
+        {error && <Text className="mb-4 text-red-500">{error}</Text>}
         <TouchableOpacity
-          className="w-full py-3 rounded-full bg-blue-400"
+          className="w-full rounded-full bg-blue-400 py-3"
           onPress={handleLogin}
-          disabled={loading}
-        >
+          disabled={loading}>
           {loading ? (
-            <Text className="text-white font-bold text-lg text-center">Loading...</Text>
+            <Text className="text-center text-lg font-bold text-white">Loading...</Text>
           ) : (
-            <Text className="text-white font-bold text-lg text-center">LOGIN</Text>
+            <Text className="text-center text-lg font-bold text-white">Login</Text>
           )}
         </TouchableOpacity>
+        <TouchableOpacity
+          className="mt-4 w-full rounded-full bg-green-400 py-3"
+          onPress={checkSession}
+          disabled={loading}>
+          <Text className="text-center text-lg font-bold text-white">Check Session</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className="mt-4 w-full rounded-full bg-red-400 py-3"
+          onPress={logout}
+          disabled={loading}>
+          <Text className="text-center text-lg font-bold text-white">Logout</Text>
+        </TouchableOpacity>
+        );
       </View>
     </View>
   );
