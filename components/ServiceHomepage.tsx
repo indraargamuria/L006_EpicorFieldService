@@ -58,7 +58,6 @@ const lotMap: { [key: string]: string[] } = {
   'TIPR-002-BDY': ['AT002'],
   'TIPR-003-FRM': ['AT003'],
   'TIPR-004-HNG': ['AT004'],
-  'TIPR-005-PMP': ['AT005'],
 };
 
 export const ServiceHomepage = ({ setIsClicked, setIsLoggedIn }: Props) => {
