@@ -31,7 +31,7 @@ export default function App() {
     checkLoginStatus();
   }, []);
 
-  if (isLoggedIn === null) {
+  if (isActive === 'null') {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
@@ -40,27 +40,31 @@ export default function App() {
     );
   }
 
-  //return isLoggedIn ? <Homepage /> : <Login />;
-  return (
-    <SafeAreaView className="flex-1">
-      {/* Display isClicked text */}
-      <View className="bg-gray-100 p-4">
-        <Text className="text-center text-xl font-bold">
-          isClicked: {isClicked} Logged In {isActive}
-        </Text>
-      </View>
-
-      <View className="flex-1 flex-row">
-        {/* Homepage takes the left half of the screen */}
-        <View className="flex-1 border-r border-gray-200">
-          <Homepage setIsLoggedIn={handleSession} setIsClicked={handleClick} />
-        </View>
-
-        {/* Login takes the right half of the screen */}
-        <View className="flex-1">
-          <Login setIsLoggedIn={handleSession} setIsClicked={handleClick} />
-        </View>
-      </View>
-    </SafeAreaView>
+  return isLoggedIn ? (
+    <Homepage setIsLoggedIn={handleSession} setIsClicked={handleClick} />
+  ) : (
+    <Login setIsLoggedIn={handleSession} setIsClicked={handleClick} />
   );
+  // return (
+  //   <SafeAreaView className="flex-1">
+  //     {/* Display isClicked text */}
+  //     <View className="bg-gray-100 p-4">
+  //       <Text className="text-center text-xl font-bold">
+  //         isClicked: {isClicked} Logged In {isActive}
+  //       </Text>
+  //     </View>
+
+  //     <View className="flex-1 flex-row">
+  //       {/* Homepage takes the left half of the screen */}
+  //       <View className="flex-1 border-r border-gray-200">
+  //         <Homepage setIsLoggedIn={handleSession} setIsClicked={handleClick} />
+  //       </View>
+
+  //       {/* Login takes the right half of the screen */}
+  //       <View className="flex-1">
+  //         <Login setIsLoggedIn={handleSession} setIsClicked={handleClick} />
+  //       </View>
+  //     </View>
+  //   </SafeAreaView>
+  // );
 }
